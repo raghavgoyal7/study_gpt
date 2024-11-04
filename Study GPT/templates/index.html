@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Study GPT</title>
+</head>
+<body>
+    <h1>Welcome to Study GPT</h1>
+    <div>
+        <p>You: <span id="userMessage"></span></p>
+        <p>Study GPT: <span id="botResponse"></span></p>
+    </div>
+    <input type="text" id="userInput" placeholder="Type your question...">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById("userInput").value;
+            document.getElementById("userMessage").innerText = userInput;
+
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("botResponse").innerText = data.response;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("botResponse").innerText = "An error occurred.";
+            });
+        }
+    </script>
+</body>
+</html>
